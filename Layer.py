@@ -6,7 +6,7 @@ Created on Fri Oct 28 19:02:07 2016
 """
 
 import numpy as np
-import Node
+from Node import Node
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
@@ -16,7 +16,7 @@ class Layer():
         self.n_node = n_node
         self.node_set = []
         self.outputs = np.zeros(self.n_node)
-        self.delats = np.zeros(self.n_node)
+        self.deltas = np.zeros(self.n_node)
         for node in range(n_node):
             self.node_set.append(Node(self.layer_index, node))
         # self.node_set.append(BiasNode(self.layer_index, n_node))
@@ -37,7 +37,7 @@ class Layer():
     def compute_deltas0(self, error): # for output layer only
         for i, node in enumerate(self.node_set):
             node.compute_delta0(error[i])
-            self.delats[i] = node.delta
+            self.deltas[i] = node.delta
     
     def compute_deltas(self, weights, next_layer):
         for i, node in enumerate(self.node_set):

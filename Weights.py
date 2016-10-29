@@ -15,10 +15,11 @@ class Weights():
         self.n = down_layer.n_node
         self.w = np.random.uniform(-0.1, 0.1, (self.n, self.m))
         self.bias = np.random.uniform(-0.1, 0.1, self.n)
-        self.alpha = 1
-    def weights_update(self):
-        for node in self.down_layer:
+
+    def weights_update(self, alpha):
+        for node in self.down_layer.node_set:
             ind = node.node_index
             delta = node.delta
             x = self.down_layer.x
-            self.w[ind] = self.w[ind] + self.alpha * delta * x
+            self.w[ind] = self.w[ind] + alpha * delta * x
+            self.bias[ind] = self.bias[ind] + alpha * delta

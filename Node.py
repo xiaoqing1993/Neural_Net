@@ -17,6 +17,7 @@ class Node():
     def __init__(self, layer_index, node_index):
         self.layer_index = layer_index
         self.node_index = node_index
+        self.oj = 0
 
     def output_compute(self, x, weights):
         w_up = weights.w[self.node_index]
