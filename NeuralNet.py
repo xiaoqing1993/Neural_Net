@@ -6,14 +6,15 @@ Created on Fri Oct 28 19:36:17 2016
 """
 from Layer import Layer
 from Weights import Weights
+from sklearn.metrics import accuracy_score
 import numpy as np
 import copy
 class NeuralNet():
     def __init__(self, n_Hlayer, n_node, alpha):
         self.n_Hlayer = n_Hlayer
         self.n_node = n_node
-        n_node_in = 4
-        n_node_out = 3
+        n_node_in = 3600
+        n_node_out = 19
         self.alpha = alpha
         self.Net = [Layer(0, n_node_in)]
         self.WR = []
@@ -36,7 +37,7 @@ class NeuralNet():
     def BackPropagation(self, y):
         output_layer = self.Net[-1]
         error = y - self.y_pre
-        print 'error = ', error
+        #print 'error = ', error
         output_layer.compute_deltas0(error)
         for layer in reversed(self.Net[:-1]):
             ind = layer.layer_index
@@ -46,30 +47,44 @@ class NeuralNet():
     def WeightUpdate(self):
         for weight in self.WR:
             weight.weights_update(self.alpha)
-            print weight.w
+            #print weight.w
+            
     def train_epoch(self, X, y):
         for ind, sample in enumerate(X):
-            print ind, sample
+            sample = sample.toarray()
+            #print ind, sample
             yp = self.FeedForward(sample)
             self.BackPropagation(y[ind])
             self.WeightUpdate()
             
-    def train(self, X, y, iteration):
+    def train(self, X, y, yo, iteration):
         for index in range(iteration):
+            print 'epoch', index
             self.train_epoch(X, y)
-
+            self.iteration_predict(X, yo)
+            
     def predict(self, X):
         m, n = np.shape(X)
         y_p = np.zeros(m)
         #y_p = []
         for ind, sample in enumerate(X):
-            print ind, sample
+            sample = sample.toarray()
+            #print ind, sample
             yp = copy.deepcopy(self.FeedForward(sample))
-            print self.y_pre
-            print yp
+            #print self.y_pre
+            #print yp
             #y_p.append(yp)
             y_p[ind] = np.argmax(yp)
         return y_p
+        
+    def iteration_predict(self, X, yo):
+        m, n = np.shape(X)
+        y_p = np.zeros(m)
+        for ind, sample in enumerate(X):
+            sample = sample.toarray()
+            yp = copy.deepcopy(self.FeedForward(sample))
+            y_p[ind] = np.argmax(yp)
+        print 'training accuracy:', accuracy_score(yo, y_p)
 
 '''
 to do list

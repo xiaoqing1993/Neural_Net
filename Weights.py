@@ -14,7 +14,7 @@ class Weights():
         self.m = up_layer.n_node
         self.n = down_layer.n_node
         self.w = np.random.uniform(-0.1, 0.1, (self.n, self.m))
-        self.bias = np.random.uniform(-0.1, 0.1, self.n)
+        self.bias = np.random.uniform(-1, 1, self.n)
 
     def weights_update(self, alpha):
         for node in self.down_layer.node_set:
