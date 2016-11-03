@@ -7,6 +7,7 @@ Created on Fri Oct 28 19:36:17 2016
 from Layer import Layer
 from Weights import Weights
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 import numpy as np
 import copy
 class NeuralNet():
@@ -24,6 +25,16 @@ class NeuralNet():
         
         for layer_ind in range(n_Hlayer+1):
             self.WR.append(Weights(self.Net[layer_ind], self.Net[layer_ind+1]))
+    
+    def ytrain_preprocess(self, y):
+        y_new = []
+        n_label = len(set(y))
+        for label in y:
+            y_temp = np.zeros(n_label)
+            y_temp[label] = 1
+            y_new.append(y_temp)
+        y_new = np.array(y_new)
+        return y_new
    
     def FeedForward(self, sample):
         self.Net[0].outputs0(sample)
@@ -57,11 +68,15 @@ class NeuralNet():
             self.BackPropagation(y[ind])
             self.WeightUpdate()
             
-    def train(self, X, y, yo, iteration):
+    def train(self, X, y, iteration):
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3)
+        y_new = self.ytrain_preprocess(y_train)
         for index in range(iteration):
             print 'epoch', index
-            self.train_epoch(X, y)
-            self.iteration_predict(X, yo)
+            self.train_epoch(X_train, y_new)
+            self.iteration_predict(X_train, y_train)
+            yp_test = self.predict(X_test)
+            print 'validation error:', accuracy_score(y_test, yp_test)
             
     def predict(self, X):
         m, n = np.shape(X)
