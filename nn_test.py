@@ -53,17 +53,3 @@ for i in range(9):
         n_node_perlayer0 = n_node_perlayer
         learning_rate0 = learning_rate
 
-'''
-print 'calculating training accuracy...'
-y_p = neural_network.predict(X_train)
-y_p = np.array(y_p)
-acc_train = accuracy_score(y_train, y_p)
-print 'training accuracy = ', acc_train
-
-print 'validating...'
-yp_test = neural_network.predict(X_test)
-yp_test = np.array(yp_test)
-acc_test = accuracy_score(y_test, yp_test)
-print 'validation accuracy = ', acc_test
-'''
-
