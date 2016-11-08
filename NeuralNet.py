@@ -16,6 +16,7 @@ class NeuralNet():
         self.n_node = n_node
         n_node_in = 3600
         n_node_out = 19
+        self.val_acc = 0
         self.alpha = alpha
         self.Net = [Layer(0, n_node_in)]
         self.WR = []
@@ -71,12 +72,15 @@ class NeuralNet():
     def train(self, X, y, iteration):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3)
         y_new = self.ytrain_preprocess(y_train)
+        self.Xtest = X_test
+        self.ytest = y_test
         for index in range(iteration):
             print 'epoch', index
             self.train_epoch(X_train, y_new)
             self.iteration_predict(X_train, y_train)
             yp_test = self.predict(X_test)
-            print 'validation error:', accuracy_score(y_test, yp_test)
+            self.val_acc = accuracy_score(y_test, yp_test)
+            print 'validation accuracy:', self.val_acc
             
     def predict(self, X):
         m, n = np.shape(X)
