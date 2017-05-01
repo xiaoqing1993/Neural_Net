@@ -1,6 +1,8 @@
 # Neural_Net
 A fully connected backpropagation neural network. 
+
 Supporting activations: ReLU with softmax output and sigmoid 
+
 Supporting loss functions: Cross-entropy
 
 # To Do List
